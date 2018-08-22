@@ -34,7 +34,7 @@ CONF_DEFAULT_FAN_MODE = 'default_fan_mode'
 
 CONF_DEFAULT_OPERATION_FROM_IDLE = 'default_operation_from_idle'
 
-DEFAULT_NAME = 'Mazgan IR Climate'
+DEFAULT_NAME = 'Broadlink IR Climate'
 DEFAULT_TIMEOUT = 10
 DEFAULT_RETRY = 3
 DEFAULT_MIN_TEMP = 16
@@ -305,7 +305,7 @@ class BroadlinkIRClimate(ClimateDevice):
 
     def set_operation_mode(self, operation_mode):
         """Set new target temperature."""
-        # Some broken interface causes this to seep through
+        # Some broken interface caused this to seep through
         # when operating via Google Home
         if operation_mode == 'off':
           self._is_on = False
@@ -333,13 +333,8 @@ class BroadlinkIRClimate(ClimateDevice):
         state = yield from async_get_last_state(self.hass, self.entity_id)
         
         if state is not None:
-            _LOGGER.error("STATE DUMP")            
-            _LOGGER.error(str(state))
             self._target_temperature = state.attributes['temperature']
             self._current_operation = state.attributes['operation_mode']
             self._current_fan_mode = state.attributes['fan_mode']
-            _LOGGER.error("STATE STATE")
-            _LOGGER.error(state.state)
             self._is_on = (state.state != 'off')
-        else:
-            _LOGGER.error("NO STATE RECORDED")
+
